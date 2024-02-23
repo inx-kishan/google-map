@@ -37,7 +37,7 @@ const LocationList: FC<LocationListT> = ({ setSelectedPlace }) => {
   );
 
   return (
-    <div className="w-[500px] p-5 pb-6 bg-white rounded relative">
+    <div className="w-[300px] md:w-[500px]  p-5 pb-6 bg-white rounded relative">
       <TextInput
         placeholder="Search address"
         styles={{
@@ -50,7 +50,7 @@ const LocationList: FC<LocationListT> = ({ setSelectedPlace }) => {
         value={searchQuery}
         onChange={e => setSearchQuery(e.target.value)}
       />
-      <ScrollArea h={600} scrollbarSize={4}>
+      <ScrollArea h={'calc(100vh - 300px)'} scrollbarSize={4}>
         {' '}
         {filteredLocations?.length ? (
           <List
