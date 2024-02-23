@@ -4,6 +4,7 @@ import { List, ScrollArea, Text, TextInput } from '@mantine/core';
 import { IconMapPinFilled, IconSearch, IconX } from '@tabler/icons-react';
 import { AddressT } from '@/components/types/map';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
+import NoDataFound from '../common/NoDataFound';
 
 interface LocationListT {
   setSelectedPlace: Dispatch<
@@ -49,52 +50,56 @@ const LocationList: FC<LocationListT> = ({ setSelectedPlace }) => {
       />
       <ScrollArea h={600} scrollbarSize={4}>
         {' '}
-        <List
-          spacing="md"
-          size="sm"
-          center
-          icon={<IconMapPinFilled size={20} />}
-          className=" pt-3"
-          styles={{
-            itemWrapper: {
-              width: '100%',
-              alignSelf: 'center'
-            },
-            itemLabel: {
-              width: '100%'
-            }
-          }}
-        >
-          {filteredLocations?.map((location: AddressT) => (
-            <List.Item
-              key={location.place_id}
-              className="cursor-pointer bg-[#f3f3f3] px-5 py-1.5 rounded-lg min-h-[68px] flex"
-            >
-              <div className="flex justify-between items-center gap-5">
-                <div onClick={() => setLocation(location)}>
-                  <Text
-                    lineClamp={2}
-                    className="font-semibold text-[#222] break-words leading-6"
-                  >
-                    {' '}
-                    {location.formattedAddress}
-                  </Text>
-                  <p className="text-gray-400 font-semibold">
-                    Latitude : {location.lat?.toFixed(6)} Longitude :{' '}
-                    {location.lng?.toFixed(6)}
-                  </p>
+        {filteredLocations?.length ? (
+          <List
+            spacing="md"
+            size="sm"
+            center
+            icon={<IconMapPinFilled size={20} />}
+            className=" pt-3"
+            styles={{
+              itemWrapper: {
+                width: '100%',
+                alignSelf: 'center'
+              },
+              itemLabel: {
+                width: '100%'
+              }
+            }}
+          >
+            {filteredLocations?.map((location: AddressT) => (
+              <List.Item
+                key={location.place_id}
+                className="cursor-pointer bg-[#f3f3f3] px-5 py-1.5 rounded-lg min-h-[68px] flex"
+              >
+                <div className="flex justify-between items-center gap-5">
+                  <div onClick={() => setLocation(location)}>
+                    <Text
+                      lineClamp={2}
+                      className="font-semibold text-[#222] break-words leading-6"
+                    >
+                      {' '}
+                      {location.formattedAddress}
+                    </Text>
+                    <p className="text-gray-400 font-semibold">
+                      Latitude : {location.lat?.toFixed(6)} Longitude :{' '}
+                      {location.lng?.toFixed(6)}
+                    </p>
+                  </div>
+                  <div>
+                    <IconX
+                      size={25}
+                      color="gray"
+                      onClick={() => removeLocationFromList(location?.place_id)}
+                    />
+                  </div>
                 </div>
-                <div>
-                  <IconX
-                    size={25}
-                    color="gray"
-                    onClick={() => removeLocationFromList(location?.place_id)}
-                  />
-                </div>
-              </div>
-            </List.Item>
-          ))}
-        </List>
+              </List.Item>
+            ))}
+          </List>
+        ) : (
+          <NoDataFound />
+        )}
       </ScrollArea>
     </div>
   );

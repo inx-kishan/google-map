@@ -12,7 +12,9 @@ import LocationList from '@/components/map/LocationList';
 type GoogleMapComponentT = {
   name?: string;
 };
-const GoogleMapComponent: FC<GoogleMapComponentT> = ({ name = 'demo' }) => {
+const GoogleMapComponent: FC<GoogleMapComponentT> = ({
+  name = 'google map'
+}) => {
   const dispatch = useAppDispatch();
   const [map, setMap] = useState<google.maps.Map>();
   const [selectedPlace, setSelectedPlace] =
@@ -36,7 +38,7 @@ const GoogleMapComponent: FC<GoogleMapComponentT> = ({ name = 'demo' }) => {
       });
     }
   };
-
+  //locate selected place
   const locateMeAndSetPlace = () => {
     if (navigator?.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -62,7 +64,25 @@ const GoogleMapComponent: FC<GoogleMapComponentT> = ({ name = 'demo' }) => {
       console.error('Geolocation is not supported by this browser.');
     }
   };
+  //render default pointer
+  useEffect(() => {
+    if (isLoaded && location_list?.location_list && map) {
+      renderMarkers();
+    }
+  }, [isLoaded, location_list, map]);
 
+  const renderMarkers = () => {
+    location_list?.location_list?.map(address => {
+      new google.maps.Marker({
+        position: { lat: address.lat, lng: address.lng },
+        map: map,
+        icon: {
+          url: location
+        }
+      });
+    });
+  };
+  //get place details
   const getPlaceDetails = () => {
     if (!selectedPlace) {
       console.error('Selected place is undefined.');
@@ -139,7 +159,7 @@ const GoogleMapComponent: FC<GoogleMapComponentT> = ({ name = 'demo' }) => {
           onClick={locateMeAndSetPlace}
           className="absolute bottom-44 right-0 z-10 rounded-5 cursor-pointer border-none bg-none"
         />
-        {location_list?.location_list.length !== 0 && (
+        {location_list?.location_list?.length !== 0 && (
           <div className="absolute top-24 left-3 z-10">
             <LocationList setSelectedPlace={setSelectedPlace} />
           </div>
