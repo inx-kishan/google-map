@@ -23,6 +23,7 @@ const GoogleMapComponent: FC<GoogleMapComponentT> = ({
     googleMapsApiKey: env.GOOGLE_MAPS_API_KEY
   });
   const location_list = useAppSelector(GET_LOCATION_LIST);
+  const [isBouncing, setIsBouncing] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectedPlace) {
@@ -88,7 +89,7 @@ const GoogleMapComponent: FC<GoogleMapComponentT> = ({
       console.error('Selected place is undefined.');
       return;
     }
-
+    setIsBouncing(true);
     const geocoder = new window.google.maps.Geocoder();
     geocoder?.geocode({ location: selectedPlace }, (results, status) => {
       if (status === 'OK') {
@@ -127,6 +128,9 @@ const GoogleMapComponent: FC<GoogleMapComponentT> = ({
         );
       }
     });
+    setTimeout(() => {
+      setIsBouncing(false);
+    }, 1000);
   };
 
   const renderMap = () => {
@@ -151,6 +155,7 @@ const GoogleMapComponent: FC<GoogleMapComponentT> = ({
             icon={{
               url: location
             }}
+            animation={isBouncing ? google.maps.Animation.BOUNCE : undefined}
           />
         )}
         <img

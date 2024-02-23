@@ -4,7 +4,9 @@ import { List, ScrollArea, Text, TextInput } from '@mantine/core';
 import { IconMapPinFilled, IconSearch, IconX } from '@tabler/icons-react';
 import { AddressT } from '@/components/types/map';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
-import NoDataFound from '../common/NoDataFound';
+import NoDataFound from '@/components/common/NoDataFound';
+import { CSVLink } from 'react-csv';
+import { headers } from '@/helpers/constant';
 
 interface LocationListT {
   setSelectedPlace: Dispatch<
@@ -35,7 +37,7 @@ const LocationList: FC<LocationListT> = ({ setSelectedPlace }) => {
   );
 
   return (
-    <div className="w-[500px] p-5 bg-white rounded">
+    <div className="w-[500px] p-5 pb-6 bg-white rounded relative">
       <TextInput
         placeholder="Search address"
         styles={{
@@ -101,6 +103,17 @@ const LocationList: FC<LocationListT> = ({ setSelectedPlace }) => {
           <NoDataFound />
         )}
       </ScrollArea>
+      {filteredLocations?.length !== 0 && (
+        <div className="absolute right-5 bottom-0 ">
+          <CSVLink
+            data={filteredLocations}
+            headers={headers}
+            filename={'location-list.csv'}
+          >
+            Download CSV
+          </CSVLink>
+        </div>
+      )}
     </div>
   );
 };
