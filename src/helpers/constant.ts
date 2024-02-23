@@ -3,7 +3,7 @@ export interface headers {
   key: string;
 }
 export const headers = [
-  { label: 'Formatted Address', key: 'formattedAddress' },
+  { label: 'Address', key: 'formattedAddress' },
   { label: 'Street', key: 'address.street' },
   { label: 'Zip Code', key: 'address.zipCode' },
   { label: 'City', key: 'address.city' },

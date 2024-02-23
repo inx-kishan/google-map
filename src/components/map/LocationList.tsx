@@ -108,7 +108,7 @@ const LocationList: FC<LocationListT> = ({ setSelectedPlace }) => {
           <CSVLink
             data={filteredLocations}
             headers={headers}
-            filename={'location-list.csv'}
+            filename={`location-list-${new Date().toLocaleString()}.csv`}
           >
             Download CSV
           </CSVLink>

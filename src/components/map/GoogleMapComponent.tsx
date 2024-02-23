@@ -156,6 +156,7 @@ const GoogleMapComponent: FC<GoogleMapComponentT> = ({
               url: location
             }}
             animation={isBouncing ? google.maps.Animation.BOUNCE : undefined}
+            zIndex={20}
           />
         )}
         <img
